@@ -1,0 +1,102 @@
+Turn = True  # True, если ход X
+Winner = None  # True, если выиграли X
+Game_alive = True
+
+
+def print_area(L):
+    for i in L:
+        for j in i:
+            print(j, end='  ')
+        print('\n')
+
+
+def move(L):
+    global Turn
+    ValidCoord = True
+    try:
+        M = tuple(map(int, tuple(input("Введите ход через пробел, 1 координата - верт, 2 - гориз ").split())))
+    except:
+        print('Неверные координаты!')
+        ValidCoord = False
+    if ValidCoord:
+        if (not (0 < M[0] < 4)) or (not (0 < M[1] < 4)) or len(M) != 2:
+            print("Такого хода не может быть! Попробуй снова")
+            move(L)
+        else:
+            if Turn and (L[M[0]][M[1]] == '-'):
+                L[M[0]][M[1]] = 'X'
+                Turn = not Turn
+            elif L[M[0]][M[1]] == '-':
+                L[M[0]][M[1]] = 'O'
+                Turn = not Turn
+            else:
+                print("Поле уже занято, попробуйте другой ход!")
+                move(L)
+
+
+def Win(L):
+    global Game_alive
+    global Winner
+    Area = [[], [], []]
+    for i in range(1, len(L)):
+        for j in range(1, len(L[i])):
+            Area[i - 1].append(L[i][j])
+    for i in range(len(Area)):
+        if (Area[i][0] == Area[i][1] == Area[i][2]) and Area[i][0] != '-':
+            Game_alive = False
+            if Area[i][0] == 'X':
+                Winner = True
+            else:
+                Winner = False
+            continue
+    for i in range(len(Area)):
+        if (Area[0][i] == Area[1][i] == Area[2][i]) and Area[0][i] != '-':
+            Game_alive = False
+            if Area[0][i] == 'X':
+                Winner = True
+            else:
+                Winner = False
+            continue
+
+    if (Area[0][0] == Area[1][1] == Area[2][2]) and Area[0][0] != '-':
+        Game_alive = False
+        if Area[0][0] == 'X':
+            Winner = True
+        else:
+            Winner = False
+
+    if (Area[0][2] == Area[1][1] == Area[2][0]) and Area[0][2] != '-':
+        Game_alive = False
+        if Area[0][2] == 'X':
+            Winner = True
+        else:
+            Winner = False
+
+
+def main():
+    L = [['-' if (j > 0 and i > 0) else ' ' if j + i == 0 else j + i for j in range(4)] for i in range(4)]
+    global Game_alive
+    while Game_alive:
+        print_area(L)
+        move(L)
+        for i in L:
+            for j in i:
+                if j == '-':
+                    Game_alive = True
+                    break
+                else:
+                    Game_alive = False
+        Win(L)
+        if not Game_alive:
+            print_area(L)
+
+            if Winner:
+                print('Победа X \n')
+            elif Winner == False:
+                print('Победа O \n')
+            else:
+                print("Ничья")
+
+
+if __name__ == "__main__":
+    main()
