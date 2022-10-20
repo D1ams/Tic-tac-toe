@@ -86,6 +86,8 @@ def main():
                     break
                 else:
                     Game_alive = False
+            if Game_alive:
+                break
         Win(L)
         if not Game_alive:
             print_area(L)
