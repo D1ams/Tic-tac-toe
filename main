@@ -48,7 +48,7 @@ def Win(L):
                 Winner = True
             else:
                 Winner = False
-            continue
+            break
     for i in range(len(Area)):
         if (Area[0][i] == Area[1][i] == Area[2][i]) and Area[0][i] != '-':
             Game_alive = False
@@ -56,7 +56,7 @@ def Win(L):
                 Winner = True
             else:
                 Winner = False
-            continue
+            break
 
     if (Area[0][0] == Area[1][1] == Area[2][2]) and Area[0][0] != '-':
         Game_alive = False
